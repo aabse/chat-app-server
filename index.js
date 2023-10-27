@@ -13,12 +13,11 @@ const io = new Server(server, {
   connectionStateRecovery: {}
 })
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('a user connected')
 
-  socket.on('chat message', (msg) => {
-    console.log('new message -> ')
-    console.log(msg)
+  socket.on('chat message', async (msg) => {
+    io.emit('chat message', msg)
   })
 
   socket.on('disconnect', () => {
