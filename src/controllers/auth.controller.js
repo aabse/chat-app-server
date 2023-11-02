@@ -77,6 +77,9 @@ export const logout = (req, res) => {
 
 export const profile = async (req, res) => {
   console.log(req.user)
+  if (req.user == undefined) return res.status(400).json({
+    message: 'Bad request'
+  })
   const userFound = await User.findById(req.user.id)
   if (!userFound) {
     return res.status(400).json({
@@ -89,5 +92,10 @@ export const profile = async (req, res) => {
     createdAt: userFound.createdAt,
     updatedAt: userFound.updatedAt
   })
+}
+
+export const users = async (req, res) => {
+  const users = await User.find()
+  return res.json(users)
 }
 
