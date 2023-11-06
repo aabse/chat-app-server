@@ -1,11 +1,18 @@
 import express from 'express'
 import logger from 'morgan'
+import cors from 'cors'
 import authRoutes from './routes/auth.routes.js'
 import roomRoutes from './routes/room.routes.js'
 import messageRoutes from './routes/message.routes.js'
 import cookieParser from 'cookie-parser'
 
 const app = express()
+
+// cors
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}))
 
 // logger
 app.use(logger('dev'))

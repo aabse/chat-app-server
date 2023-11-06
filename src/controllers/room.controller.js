@@ -23,13 +23,35 @@ export const createRoom = async (req, res) => {
 }
 
 export const getRooms = async (req, res) => {
-  const rooms = await Room.find()
-  return res.json(rooms) 
+  const {user} = req.query
+  const currentUser = await User.findById(req.user.id)
+  if (!user) {
+    const rooms = await Room.find()
+    return res.json(rooms)
+  } else {
+    console.log('searching room')
+    const roomFound = await Room.findOne({
+      users: {
+        $all: [req.user.id, user]
+      }
+    })
+    if (roomFound) {
+      return res.json(roomFound)
+    } else {
+      const newRoom = new Room({
+        users: [currentUser,user],
+        messages: []
+      }) 
+
+      const roomSaved = await newRoom.save()
+      return res.json(roomSaved)
+
+    }
+  }
 }
 
 export const getRoom = async (req, res) => {
   const {id} = req.params
   const room = await Room.findById(id)
-
   res.json(room)
 }
