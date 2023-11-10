@@ -1,6 +1,7 @@
 import User from '../models/user.model.js'
 import Room from '../models/room.model.js'
 import Message from '../models/message.model.js'
+import Socket from '../socket/socket.js'
 
 export const createMessage = async (req, res) => {
   const {message, roomId} = req.body
@@ -17,6 +18,8 @@ export const createMessage = async (req, res) => {
       messages: newMessage
     }
   })
+
+  Socket.emitUserMessage(room.id, message)
   
   const messageSaved = await newMessage.save()
 

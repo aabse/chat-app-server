@@ -1,5 +1,6 @@
 import User from '../models/user.model.js'
 import Room from '../models/room.model.js'
+import Socket from '../socket/socket.js'
 
 export const createRoom = async (req, res) => {
   const currentUser = await User.findById(req.user.id)
@@ -25,7 +26,7 @@ export const createRoom = async (req, res) => {
 export const getRooms = async (req, res) => {
   const {user} = req.query
   const currentUser = await User.findById(req.user.id)
-  if (!user) {
+  if (user === undefined) {
     const rooms = await Room.find()
     return res.json(rooms)
   } else {
@@ -36,6 +37,7 @@ export const getRooms = async (req, res) => {
       }
     })
     if (roomFound) {
+      //Socket.joinRoom(roomFound.id)
       return res.json(roomFound)
     } else {
       const newRoom = new Room({
@@ -44,6 +46,7 @@ export const getRooms = async (req, res) => {
       }) 
 
       const roomSaved = await newRoom.save()
+      //Socket.joinRoom(roomSaved.id)
       return res.json(roomSaved)
 
     }

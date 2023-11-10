@@ -11,5 +11,7 @@ server.listen(port, () => {
   console.log(`Server running on port ${port}`)
 })
 
-const { SocketInstance } = Socket.createSocket(server)
-SocketInstance(server)
+Socket.setServer(server)
+Socket.initializeSocket()
+
+
