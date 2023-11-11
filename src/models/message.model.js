@@ -1,6 +1,6 @@
 import { model, Schema } from "mongoose"
 
-const messageSchema = new Schema({
+export const messageSchema = new Schema({
   message: {
     type: String
   },

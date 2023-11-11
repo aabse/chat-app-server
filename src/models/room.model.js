@@ -1,4 +1,5 @@
 import mongoose, { model, Schema } from 'mongoose'
+import Message, { messageSchema } from '../models/message.model.js'
 
 const roomSchema = new mongoose.Schema({
   users: [
@@ -9,8 +10,7 @@ const roomSchema = new mongoose.Schema({
   ],
   messages: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'Message'
+      type: messageSchema
     }
   ]
 })
