@@ -12,7 +12,11 @@ const roomSchema = new mongoose.Schema({
     {
       type: messageSchema
     }
-  ]
+  ],
+  name: {
+    type: String,
+    required: false
+  }
 })
 
 export default model('Room', roomSchema)

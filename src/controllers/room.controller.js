@@ -3,12 +3,9 @@ import Room from '../models/room.model.js'
 import Socket from '../socket/socket.js'
 
 export const createRoom = async (req, res) => {
-  const currentUser = await User.findById(req.user.id)
-  let {users} = req.body
-  console.log(currentUser)
-  users = [currentUser, ...users]
-
+  let {users, name} = req.body
   const newRoom = new Room({
+    name,
     users,
     messages: []
   })
@@ -20,15 +17,26 @@ export const createRoom = async (req, res) => {
     users: roomSaved.users,
     messages: roomSaved.messages
   })
-
 }
 
 export const getRooms = async (req, res) => {
   const {user} = req.query
   const currentUser = await User.findById(req.user.id)
   if (user === undefined) {
-    const rooms = await Room.find()
-    return res.json(rooms)
+    const {names} = req.query
+    if (names === undefined) {
+      const rooms = await Room.find()
+      return res.json(rooms)
+    } else {
+      const listNames = names.split(',')
+      console.log(listNames)
+      const rooms = await Room.find({
+        name: {
+          $in: listNames
+        }
+      })
+      return res.json(rooms)
+    }
   } else {
     console.log('searching room')
     const roomFound = await Room.findOne({

@@ -5,7 +5,7 @@ import { authRequired } from '../middlewares/validateToken.js'
 
 const router = Router()
 
-router.post('/rooms', authRequired, createRoom)
+router.post('/rooms', createRoom)
 router.get('/rooms', authRequired, getRooms)
 router.get('/rooms/:id', authRequired, getRoom)
 
