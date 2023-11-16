@@ -1,9 +1,12 @@
 import User from '../models/user.model.js'
+import Room from '../models/room.model.js'
 import bcrypt from 'bcryptjs'
 import { createAccessToken } from '../libs/jwt.js'
 
 export const register = async (req, res) => {
   const {email, password} = req.body
+
+  const listRooms = ['general']
 
   try {
 
@@ -15,6 +18,17 @@ export const register = async (req, res) => {
     })
 
     const userSaved = await newUser.save()
+
+    await Room.updateMany({
+      name: {
+        $in: listRooms
+      }
+    },
+    {
+      $push: {
+        users: userSaved._id
+      }
+    })
 
     // generate token
     const token = await createAccessToken({
@@ -97,7 +111,12 @@ export const profile = async (req, res) => {
 }
 
 export const users = async (req, res) => {
-  const users = await User.find()
+  console.log(req.user)
+  const users = await User.find({
+    _id: {
+      $ne: req.user.id
+    }
+  })
   return res.json(users)
 }
 

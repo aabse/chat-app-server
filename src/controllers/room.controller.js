@@ -39,9 +39,13 @@ export const getRooms = async (req, res) => {
     }
   } else {
     console.log('searching room')
+    const listRooms = ['general']
     const roomFound = await Room.findOne({
       users: {
         $all: [req.user.id, user]
+      },
+      name: {
+        $nin: listRooms
       }
     })
     if (roomFound) {
