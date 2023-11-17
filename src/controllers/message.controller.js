@@ -10,7 +10,8 @@ export const createMessage = async (req, res) => {
 
   const newMessage = new Message({
     message,
-    user: currentUser
+    user: currentUser.id,
+    name: currentUser.email
   })
 
   const room = await Room.findByIdAndUpdate(roomId, {
@@ -19,7 +20,7 @@ export const createMessage = async (req, res) => {
     }
   })
 
-  Socket.emitUserMessage(room.id, message)
+  Socket.emitUserMessage(room.id, newMessage)
   
   const messageSaved = await newMessage.save()
 

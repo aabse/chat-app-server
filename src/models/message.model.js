@@ -8,6 +8,9 @@ export const messageSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  name: {
+    type: String
+  },
   room: {
     type: Schema.Types.ObjectId,
     ref: 'Room'
