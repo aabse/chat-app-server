@@ -5,12 +5,22 @@ import authRoutes from './routes/auth.routes.js'
 import roomRoutes from './routes/room.routes.js'
 import messageRoutes from './routes/message.routes.js'
 import cookieParser from 'cookie-parser'
+import dotenv from 'dotenv'
+
+dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`
+})
 
 const app = express()
 
+const URL_ORIGIN = process.env.URL_ORIGIN ?? 'http://localhost'
+const PORT_ORIGIN = process.env.PORT_ORIGIN ?? '5173'
+
+console.log(URL_ORIGIN)
+
 // cors
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: `${URL_ORIGIN}:${PORT_ORIGIN}`,
   credentials: true
 }))
 

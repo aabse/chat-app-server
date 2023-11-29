@@ -20,10 +20,11 @@ export const createMessage = async (req, res) => {
     }
   })
 
-  Socket.emitUserMessage(room.id, newMessage)
   
   const messageSaved = await newMessage.save()
 
+  Socket.emitUserMessage(room.id, messageSaved)
+  
   res.json(messageSaved)
 }
 

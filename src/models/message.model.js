@@ -15,6 +15,9 @@ export const messageSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Room'
   }
+}, 
+{
+  timestamps: true
 })
 
 export default model('Message', messageSchema)
